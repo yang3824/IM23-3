@@ -26,35 +26,37 @@ def draw_fingertip_coordinate(image, results):  # 畫指底座標
     return image
 
 def print_hand_length(image, results):
-    joint_list2 = [[5], [9]]  # 量指寬
+    joint_list1 = [[5], [9]]  # 量指寬
+    joint_list2 = [[9], [12]]  # 量指長
     joint_list3 = [[0], [9]]  # 量手掌高度
-    joint_list4 = [[0], [17]]  # 量手掌寬度
-    subX = 0.00
-    subY = 0.00
-    subA = 0.00
-    subB = 0.00
-    subC = 0.00
-    subD = 0.00
+    joint_list4 = [[5], [17]]  # 量手掌寬度
+    subX = subY = subA = subB = subC = subD = subE = subF = 0.00
     for hand in results.multi_hand_landmarks:
         # Loop through joint sets
-        for joint in joint_list2:
-            a = np.array([hand.landmark[joint[0]].x, hand.landmark[joint[0]].y])  # First coord 指尖
+        for joint in joint_list1:
+            a = np.array([hand.landmark[joint[0]].x, hand.landmark[joint[0]].y])
             subX = abs(subX - round(a[0], 2))
             subY = abs(subY - round(a[1], 2))
+        for joint in joint_list2:
+            a = np.array([hand.landmark[joint[0]].x, hand.landmark[joint[0]].y])
+            subE = abs(subE - round(a[0], 2))
+            subF = abs(subF - round(a[1], 2))
         for joint in joint_list3:
-            a = np.array([hand.landmark[joint[0]].x, hand.landmark[joint[0]].y])  # First coord 指尖
+            a = np.array([hand.landmark[joint[0]].x, hand.landmark[joint[0]].y])
             subA = abs(subA - round(a[0], 2))
             subB = abs(subB - round(a[1], 2))
-        for joint in joint_list3:
-            a = np.array([hand.landmark[joint[0]].x, hand.landmark[joint[0]].y])  # First coord 指尖
+        for joint in joint_list4:
+            a = np.array([hand.landmark[joint[0]].x, hand.landmark[joint[0]].y])
             subC = abs(subC - round(a[0], 2))
             subD = abs(subD - round(a[1], 2))
     XY2 = round(math.sqrt(pow(subX, 2)+pow(subY, 2)), 2)
+    EF2 = round(math.sqrt(pow(subE, 2) + pow(subF, 2)), 2)
     AB2 = round(math.sqrt(pow(subA, 2)+pow(subB, 2)), 2)
     CD2 = round(math.sqrt(pow(subC, 2) + pow(subD, 2)), 2)
-    print("finger size:" + str(XY2 * 34.5) + "cm")
-    print("palm height:" + str(AB2 * 34.5) + "cm")
-    print("palm width:" + str(CD2 * 34.5) + "cm")
+    print("finger width size:" + str(XY2 * 34.5) + "cm")
+    print("middle finger length:" + str((EF2 * 34.5)-2.0) + "cm")
+    print("palm height:" + str((AB2 * 34.5)-1.5) + "cm")
+    print("palm width:" + str((CD2 * 34.5)+1.5) + "cm")
 
 
 
