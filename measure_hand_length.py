@@ -85,15 +85,12 @@ def hand_pos(finger_angle):
         return 'ROCK!'
     elif f1>=50 and f2>=50 and f3>=50 and f4>=50 and f5>=50:
         return '0'
-    elif f1>=50 and f2>=50 and f3>=50 and f4>=50 and f5<50:
-        return 'pink'
     elif f1>=50 and f2<50 and f3>=50 and f4>=50 and f5>=50:
+        pag.dragTo(a[0], a[1], button='left')  # 用2秒按住滑鼠右鍵到x=100，y=100的位置
         return '1'
     elif f1>=50 and f2<50 and f3<50 and f4>=50 and f5>=50:
         return '2'
     elif f1>=50 and f2>=50 and f3<50 and f4<50 and f5<50:
-        return 'ok'
-    elif f1<50 and f2>=50 and f3<50 and f4<50 and f5<50:
         return 'ok'
     elif f1>=50 and f2<50 and f3<50 and f4<50 and f5>50:
         return '3'
