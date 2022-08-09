@@ -11,18 +11,22 @@ from cvzone.HandTrackingModule import HandDetector
 mp_drawing = mp.solutions.drawing_utils  # 繪製方法、工具。將座標繪製到螢幕上
 mp_drawing_styles = mp.solutions.drawing_styles  # mediapipe 繪圖樣式。匯入手模型
 mp_hands = mp.solutions.hands  # mediapipe 偵測手掌方法
+# cv2.putText:在圖片上加上文字。cv2.putText(影像, 文字, 座標, 字型, 大小, 顏色, 線條寬度, 線條種類)
 
-def convert_coord(image, results):
-    joint_list1 = [[4]]
+def convert_coord(image, results):  # 將手掌中心在視窗內座標轉換成螢幕座標
+
+    joint_list1 = [[0], [5]]
+    b = np.array([])
     for hand in results.multi_hand_landmarks:
         # Loop through joint sets
         for joint in joint_list1:
-            a = np.array([2559*hand.landmark[joint[0]].x, 1439*hand.landmark[joint[0]].y])  # First coord 指尖
-            print("a: "+str(a[0])+","+str(a[1]))
-    return(a)
+            a = np.array([2559*hand.landmark[joint[0]].x, 1439*hand.landmark[joint[0]].y])
+            b = np.concatenate([b, a])
+    c = np.array([(b[0]+b[2])/2, (b[1]+b[3])/2])
+    print("palm:"+str(c[0])+","+str(c[1]))
+    return(c)
 
-# 根據兩點的座標，計算角度
-def vector_2d_angle(v1, v2):
+def vector_2d_angle(v1, v2):  # 根據兩點的座標，計算角度
     v1_x = v1[0]
     v1_y = v1[1]
     v2_x = v2[0]
@@ -33,7 +37,6 @@ def vector_2d_angle(v1, v2):
         angle_ = 180
     return angle_
 
-# 根據傳入的 21 個節點座標，得到該手指的角度
 def hand_angle(hand_):
     angle_list = []
     # thumb 大拇指角度
@@ -74,10 +77,10 @@ def hand_pos(finger_angle):
     f3 = finger_angle[2]   # 中指角度
     f4 = finger_angle[3]   # 無名指角度
     f5 = finger_angle[4]   # 小拇指角度
-    a=convert_coord(image, results)
+    a = convert_coord(image, results)
     # 小於 50 表示手指伸直，大於等於 50 表示手指捲縮
     if f1<50 and f2>=50 and f3>=50 and f4>=50 and f5>=50:
-        pag.moveTo(a[0],a[1])
+        pag.moveTo(a[0], a[1])  # 滑鼠移動
         return 'good'
     elif f1>=50 and f2>=50 and f3<50 and f4>=50 and f5>=50:
         return 'no!!!'
@@ -86,9 +89,10 @@ def hand_pos(finger_angle):
     elif f1>=50 and f2>=50 and f3>=50 and f4>=50 and f5>=50:
         return '0'
     elif f1>=50 and f2<50 and f3>=50 and f4>=50 and f5>=50:
-        pag.dragTo(a[0], a[1], button='left')  # 用2秒按住滑鼠右鍵到x=100，y=100的位置
+        pag.dragTo(a[0], a[1], button='left')  # 左鍵拖曳
         return '1'
     elif f1>=50 and f2<50 and f3<50 and f4>=50 and f5>=50:
+        pag.click(a[0], a[1], button='left')  # 左鍵點擊
         return '2'
     elif f1>=50 and f2>=50 and f3<50 and f4<50 and f5<50:
         return 'ok'
@@ -168,14 +172,13 @@ def get_label(index, hand, results):  # index:檢測的數量, hand: 手部landm
             label = classification.classification[0].label  # 輸出"左手"或"右手"
             score = classification.classification[0].score  # 左右手的score(信心程度)
             text = '{} {}'.format(label, round(score, 2))
-            #print(text)  # 印出信心值
             # 提取真正想要渲染的座標
             coords = tuple(np.multiply(np.array((  # 存進numpy的array
             hand.landmark[mp_hands.HandLandmark.WRIST].x,  # hand:抓取hand results, landmark:抓取地標, WRIST: 通過手腕
             hand.landmark[mp_hands.HandLandmark.WRIST].y)),  # 獲取x和y的座標
             [800, 400]).astype(int))  # 網路攝影鏡頭的尺寸(?)
             # output = text, coords
-            cv2.putText(image, text, coords, cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 255, 255), 2, cv2.LINE_AA)
+            #cv2.putText(image, text, coords, cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 255, 255), 2, cv2.LINE_AA)  # 印出左右手和信心值
     # return output  # 回傳"左(右)手", score, xy座標
 
 def draw_finger_angles(image, results):  # image:正在使用的鏡頭影像  # joint_list:一組array
@@ -255,8 +258,7 @@ with mp_hands.Hands(max_num_hands=2, min_detection_confidence=0.5, min_tracking_
                         hand.landmark[mp_hands.HandLandmark.WRIST].y)),  # 獲取x和y的座標
                         [800, 400]).astype(int))
                     # ----需要coords座標----
-                    cv2.putText(image, text, coords, cv2.FONT_HERSHEY_SIMPLEX, 5, (255, 255, 255), 10, cv2.LINE_AA)  # 印出文字
-                    print("0")
+                    cv2.putText(image, text, coords, cv2.FONT_HERSHEY_SIMPLEX, 5, (255, 255, 255), 10, cv2.LINE_AA)  # 印出手勢意義
 
                 #-----手指角度------
 
