@@ -178,7 +178,7 @@ def get_label(index, hand, results):  # index:檢測的數量, hand: 手部landm
             # output = text, coords
             #cv2.putText(image, text, coords, cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 255, 255), 2, cv2.LINE_AA)  # 印出左右手和信心值
     # return output  # 回傳"左(右)手", score, xy座標
-
+'''
 def draw_finger_angles(image, results):  # image:正在使用的鏡頭影像  # joint_list:一組array
     joint_list = [[7, 6, 5], [11, 10, 9], [15, 14, 13], [19, 18, 17]]  # joint:關節，該變數儲存要渲染的關節組合，數字為手指關節，三個合起來就是一根手指
     for hand in results.multi_hand_landmarks:  # 每隻手
@@ -200,6 +200,7 @@ def draw_finger_angles(image, results):  # image:正在使用的鏡頭影像  # 
             cv2.putText(image, str(round(angle, 2)), tuple(np.multiply(b, [640, 480]).astype(int)), cv2.FONT_HERSHEY_SIMPLEX,
                     0.5, (61,97,5), 2, cv2.LINE_AA)
     return image
+'''
 
 
 
@@ -267,7 +268,7 @@ with mp_hands.Hands(max_num_hands=2, min_detection_confidence=0.5, min_tracking_
                 # 大小字體一致, 字體顏色, 大小, 類型
 
             draw_fingertip_coordinate(image, results)
-            draw_finger_angles(image, results)
+            # draw_finger_angles(image, results)  # 印出手指角度
 
 
 
