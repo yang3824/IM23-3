@@ -82,10 +82,9 @@ def hand_pos(finger_angle):
     if f1<50 and f2>=50 and f3>=50 and f4>=50 and f5>=50:
         pag.moveTo(a[0], a[1])  # 滑鼠移動
         return 'good'
-    elif f1>=50 and f2>=50 and f3<50 and f4>=50 and f5>=50:
-        return 'no!!!'
-    elif f1<50 and f2<50 and f3>=50 and f4>=50 and f5<50:
-        return 'ROCK!'
+    elif f1>=50 and f2>=50 and f3<50 and f4<50 and f5<50:
+        pag.dragTo(a[0], a[1], 0.5, button='left')
+        return 'ok'
     elif f1>=50 and f2>=50 and f3>=50 and f4>=50 and f5>=50:
         pag.click(a[0], a[1], button='left', duration=0.5)  # 左鍵點擊
         return '0'
@@ -99,8 +98,10 @@ def hand_pos(finger_angle):
         pag.hotkey('shift', 'tab')
         pag.PAUSE = 0.1
         return '2'
-    elif f1>=50 and f2>=50 and f3<50 and f4<50 and f5<50:
-        return 'ok'
+    elif f1 >= 50 and f2 >= 50 and f3 < 50 and f4 >= 50 and f5 >= 50:
+        return 'FXCK!!'
+    elif f1 < 50 and f2 < 50 and f3 >= 50 and f4 >= 50 and f5 < 50:
+        return 'ROCK!'
     elif f1>=50 and f2<50 and f3<50 and f4<50 and f5>50:
         return '3'
     elif f1>=50 and f2<50 and f3<50 and f4<50 and f5<50:
