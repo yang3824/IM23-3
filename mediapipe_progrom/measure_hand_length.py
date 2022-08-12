@@ -87,12 +87,17 @@ def hand_pos(finger_angle):
     elif f1<50 and f2<50 and f3>=50 and f4>=50 and f5<50:
         return 'ROCK!'
     elif f1>=50 and f2>=50 and f3>=50 and f4>=50 and f5>=50:
+        pag.click(a[0], a[1], button='left', duration=0.5)  # 左鍵點擊
         return '0'
     elif f1>=50 and f2<50 and f3>=50 and f4>=50 and f5>=50:
-        pag.dragTo(a[0], a[1], button='left')  # 左鍵拖曳
+        pag.PAUSE = 0.5
+        pag.press('tab')
+        pag.PAUSE = 0.1
         return '1'
     elif f1>=50 and f2<50 and f3<50 and f4>=50 and f5>=50:
-        pag.click(a[0], a[1], button='left')  # 左鍵點擊
+        pag.PAUSE = 0.5
+        pag.hotkey('shift', 'tab')
+        pag.PAUSE = 0.1
         return '2'
     elif f1>=50 and f2>=50 and f3<50 and f4<50 and f5<50:
         return 'ok'
@@ -102,14 +107,6 @@ def hand_pos(finger_angle):
         return '4'
     elif f1<50 and f2<50 and f3<50 and f4<50 and f5<50:
         return '5'
-    elif f1<50 and f2>=50 and f3>=50 and f4>=50 and f5<50:
-        return '6'
-    elif f1<50 and f2<50 and f3>=50 and f4>=50 and f5>=50:
-        return '7'
-    elif f1<50 and f2<50 and f3<50 and f4>=50 and f5>=50:
-        return '8'
-    elif f1<50 and f2<50 and f3<50 and f4<50 and f5>=50:
-        return '9'
     else:
         return ''
 
@@ -157,10 +154,10 @@ def print_hand_length(image, results):
     EF2 = round(math.sqrt(pow(subE, 2) + pow(subF, 2)), 2)
     AB2 = round(math.sqrt(pow(subA, 2)+pow(subB, 2)), 2)
     CD2 = round(math.sqrt(pow(subC, 2) + pow(subD, 2)), 2)
-    print("finger width size:" + str(XY2 * 34.5) + "cm")
-    print("middle finger length:" + str((EF2 * 34.5)-2.0) + "cm")
-    print("palm height:" + str((AB2 * 34.5)-1.5) + "cm")
-    print("palm width:" + str((CD2 * 34.5)+1.5) + "cm")
+    print("finger width size:" + str(XY2 * 100) + "cm")  # 假設手距離鏡頭100公分
+    print("middle finger length:" + str((EF2 * 100)-2.0) + "cm")
+    print("palm height:" + str((AB2 * 100)-1.5) + "cm")
+    print("palm width:" + str((CD2 * 100)+1.5) + "cm")
 
 
 
