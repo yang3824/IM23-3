@@ -23,7 +23,7 @@ def convert_coord(image, results):  # 將手掌中心在視窗內座標轉換成
             a = np.array([2559*hand.landmark[joint[0]].x, 1439*hand.landmark[joint[0]].y])
             b = np.concatenate([b, a])
     c = np.array([(b[0]+b[2])/2, (b[1]+b[3])/2])
-    print("palm:"+str(c[0])+","+str(c[1]))
+    # print("palm:"+str(c[0])+","+str(c[1]))  #首長座標
     return(c)
 
 def vector_2d_angle(v1, v2):  # 根據兩點的座標，計算角度
@@ -232,7 +232,7 @@ with mp_hands.Hands(max_num_hands=2, min_detection_confidence=0.5, min_tracking_
         image.flags.writeable = True
         image = cv2.cvtColor(image, cv2.COLOR_RGB2BGR)
         image = cv2.resize(image, (w, h))
-        print(pag.position())
+        # print(pag.position())
         # 以下三行為渲染結果
         if results.multi_hand_landmarks:  # 檢查手座標是否有輸出
             for num, hand in enumerate(results.multi_hand_landmarks):  # num:左手是0右手是1。hand是21個關節點的座標
