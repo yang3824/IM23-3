@@ -89,12 +89,12 @@ def hand_pos(finger_angle):
         pag.click(a[0], a[1], button='left', duration=0.5)  # 左鍵點擊
         return '0'
     elif f1>=50 and f2<50 and f3>=50 and f4>=50 and f5>=50:
-        pag.PAUSE = 0.5
+        pag.PAUSE = 0.7
         pag.press('tab')
         pag.PAUSE = 0.1
         return '1'
     elif f1>=50 and f2<50 and f3<50 and f4>=50 and f5>=50:
-        pag.PAUSE = 0.5
+        pag.PAUSE = 0.7
         pag.hotkey('shift', 'tab')
         pag.PAUSE = 0.1
         return '2'
@@ -103,6 +103,7 @@ def hand_pos(finger_angle):
     elif f1 < 50 and f2 < 50 and f3 >= 50 and f4 >= 50 and f5 < 50:
         return 'ROCK!'
     elif f1>=50 and f2<50 and f3<50 and f4<50 and f5>50:
+        pag.press('enter')
         return '3'
     elif f1>=50 and f2<50 and f3<50 and f4<50 and f5<50:
         return '4'
